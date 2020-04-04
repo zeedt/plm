@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ImageBackground, StatusBar } from 'react-native';
 const plmData = require('./data.json');
-import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+import { Table,  Row, Rows } from 'react-native-table-component';
 import NumericInput from 'react-native-numeric-input'
 
 type AppState = {
@@ -24,22 +24,23 @@ export default class App extends Component<{}, AppState> {
     this.state = {
       tableHead: ['', '2"', '12\n(P/F)', '14\n(P/F)'],
       tableData: plankTableData,
-      finishedLoading : false
+      finishedLoading : false,
+      value : 2
     }
 
     setTimeout(()=> {
       this.setState({finishedLoading : true})
-    }, 3000)
+    }, 1000)
   }
 
 
   loadData = (value: number) => {
 
-    if (value == undefined || value < 2) {
-      return;
-    }
+    // if (value == undefined || value < 2) {
+    //   return;
+    // }
     this.setState({ value });
-    if (plmData["" + value + ""] != undefined) {
+    if (plmData["" + value + ""] != undefined && (value <= 19 || value >=2)) {
       const twelvePlanks = plmData["" + value + ""]["12"];
       const fourteenPlanks = plmData["" + value + ""]["14"];
       const plankTableData = [];
@@ -58,9 +59,9 @@ export default class App extends Component<{}, AppState> {
       <View style={{flex : 1}}>
         {this.state.finishedLoading &&
       <ScrollView style={styles.container}>
-
+<StatusBar backgroundColor="black" />
           <View>
-            <View>
+            <View></View>
             <NumericInput
               containerStyle={{ marginTop: 40, alignSelf: 'center' }}
               value={this.state.value}
@@ -72,9 +73,9 @@ export default class App extends Component<{}, AppState> {
               step={1}
               valueType='integer'
               rounded
-              minValue={2}
+              minValue={0}
               maxValue={19}
-              initValue={2}
+              // initValue={}
               textColor='#B0228C'
               // iconStyle={{ color: 'white' }} 
               rightButtonBackgroundColor='#EA3788'
@@ -82,7 +83,7 @@ export default class App extends Component<{}, AppState> {
             <Text style={{ marginTop: 20, color: '#dc3545', fontSize: 20 }}>
               NOTE : P/F => planks per feet.
             </Text>
-            </View>
+
             <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }} style={{ marginTop: 20, marginBottom: 20, }}>
               <Row data={this.state.tableHead} style={styles.head} textStyle={styles.headerText} />
               <Rows data={this.state.tableData} textStyle={styles.text} />
@@ -113,7 +114,7 @@ export default class App extends Component<{}, AppState> {
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: '#fff', paddingRight: 20, paddingLeft: 20 },
+  container: { backgroundColor: '#fff', paddingRight: 20, paddingLeft: 20, marginTop : 30 },
   head: { backgroundColor: '#f1f8ff' },
   headerText: { margin: 15, alignSelf: 'center', fontWeight: 'bold', fontSize: 20 },
   text: { margin: 15, alignSelf: 'center', fontSize: 20, },
