@@ -1,0 +1,17 @@
+{
+  "name": "plm",
+  "displayName": "plm",
+  "expo": {
+    "name": "plm",
+    "slug": "plm",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
